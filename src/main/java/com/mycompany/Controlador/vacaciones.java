@@ -1,0 +1,146 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.Controlador;
+
+import com.google.gson.Gson;
+import com.mycompany.Modelo.CalendarDTO;
+import com.mycompany.Modelo.Vacaciones;
+import com.mycompany.ModeloDAO.vacacionesDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author 56974
+ */
+@WebServlet(name = "vacaciones", urlPatterns = {"/vacaciones"})
+public class vacaciones extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    String addEvent = "addEvents.jsp";
+    String viewEvents = "viewEvents.jsp";
+    String listaJson ="listaJson";
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet vacaciones</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet vacaciones at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+   String acceso ="";
+        String action = request.getParameter("accion");
+        
+      
+        
+        if (action.equalsIgnoreCase("addEvent")) {
+            acceso = addEvent;
+        }
+        else  if (action.equalsIgnoreCase("viewEvents")) {
+   int usuarioId = Integer.parseInt(request.getParameter("id"));
+        vacacionesDAO dao = new vacacionesDAO();
+
+        Gson gson = new Gson();
+
+        List listaCalendarioVista = new ArrayList();
+
+        for (Vacaciones pc : dao.listar(usuarioId)) {
+            // System.out.println("->" + pc.getVacaciones_fin());
+            CalendarDTO oc = new CalendarDTO();
+
+            oc.setId(pc.getVacaciones_id());
+            oc.setTitle(pc.getVacaciones_titulo());
+            oc.setStart(pc.getVacaciones_inicio());
+            oc.setEnd(pc.getVacaciones_fin());
+            oc.setUrl(pc.getVacaciones_url());
+            oc.setClassName(pc.getVacaciones_className());
+            oc.setEditable(pc.isVacaciones_editable());
+
+            listaCalendarioVista.add(oc);
+        }
+        String lis = new Gson().toJson(listaCalendarioVista);
+             
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            out.write(new Gson().toJson(listaCalendarioVista));
+            
+         // out.close();
+        
+        
+            acceso = viewEvents;
+        }
+   
+        RequestDispatcher rd = request.getRequestDispatcher(acceso);
+        rd.forward(request, response);
+  
+
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
