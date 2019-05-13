@@ -23,7 +23,9 @@
 
                     <div class="card card-body bg-light ">
                         <form action="Insertar" method="POST" >
+                          
                             <div class="form-group">
+                                
                                 <input type="text" id="run" name="usuario_rut" class="form-control" placeholder="Ingresa tu Rut" autofocus >
                             </div>
                             <div class="form-group">
@@ -49,13 +51,7 @@
                             <div class="form-group">
                             <input type="checkbox" id="" name="usuario_estatus" value="1"> Activo
                             </div>
-                            <div class="form-group">
-                                    <select class="form-control" name="usuario_rol">
-                                         <option value="1" selected>Usuario</option>
-                                         <option value="2">Ejecutivo</option>
-                                         <option value="3">Administrador</option>
-                                    </select>
-                            </div>
+                            
                             <input type="submit" class="btn btn-success"  value="Registrar">
                             <a href="index.jsp"> Regresar</a>
                         </form>

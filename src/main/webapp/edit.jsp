@@ -76,39 +76,59 @@
                                 <input type="hidden" id="run" name="usuario_id" class="form-control"  value="<%= p.getUsuario_id()%>" autofocus >
                             </div>
                             <div class="form-group">
+                                  <label>RUT:</label>
                                 <input type="text" id="run" name="usuario_rut" class="form-control"  value="<%= p.getUsuario_rut()%>" autofocus >
                             </div>
                             <div class="form-group">
+                                  <label>Nombre:</label>
                                 <input type="text" id="name" name="usuario_nombre" class="form-control" value="<%= p.getUsuario_nombre()%>" autofocus >
                             </div>
                             <div class="form-group">
+                                <label>Apellido</label>
                                 <input type="text" id="name" name="usuario_apellido" class="form-control" value="<%= p.getUsuario_apellido()%>" autofocus >
                             </div>
 
                             <div class="form-group">
+                                <label>Telefono</label>
                                 <input type="text" id="cell" name="usuario_telefono" class="form-control" value="<%= p.getUsuario_telefono()%>" autofocus >
                             </div>
 
                             <div class="form-group">
+                                <label>Correo</label>
                                 <input type="text" id="email" name="usuario_correo" class="form-control" value="<%= p.getUsuario_correo()%>" autofocus >
                             </div>
                             <div class="form-group">
+                                <label>Contraseña</label>
                                 <input type="password" id="pass" name="usuario_pass" class="form-control" value="<%= p.getUsuario_pass()%>" autofocus >
                             </div>
                             <div class="form-group">
+                                <label>Fecha de Nacimiento:</label>
                                 <input type="date" name="usuario_fecha_nacimiento" value="<%= p.getUsuario_fecha_nacimiento()%>"class="form-control"  >
                             </div>
+                                             <% 
+                                             int disabled = 0;
+                                            if(session.getAttribute("userTipoRol") == "Usuario"){
+                                            disabled = 1;
+                                            }else {
+                                              disabled = 0;
+                                                      }
+                                             %>
                             <div class="form-group">
-                            <input type="checkbox" id="" name="usuario_estatus" value="1" <% if(p.getUsuario_estatus() == 1 ){ out.print("checked='checked'"); } %> > Activo
+                                <label>Fecha de Contrato</label>
+                                <input type="date" name="usuario_fecha_ingreso" value="<%= p.getUsuario_fecha_ingreso()%>" class="form-control"  <% if(disabled == 1){ out.print("disabled='disabled'");} %> >
+                            </div>  
+                            <div class="form-group">
+                            <input type="checkbox" id="" name="usuario_estatus" value="1" <% if(p.getUsuario_estatus() == 1 ){ out.print("checked='checked'"); } %>   <% if(disabled == 1){ out.print("disabled='disabled'");} %>> Activo
                             </div>
                             
                             <div class="form-group">
-                                    <select class="form-control" name="usuario_rol">
+                                <select class="form-control" name="usuario_rol" <% if(disabled == 1){ out.print("disabled='disabled'");} %>>
                                          <option value="1" <% if( p.getUsuario_rol() == 1 ){ out.print("selected='selected'"); }%>  >Usuario</option>
                                          <option value="2" <% if( p.getUsuario_rol() == 2 ){ out.print("selected='selected'"); }%>  >Ejecutivo</option>
                                          <option value="3" <% if( p.getUsuario_rol() == 3 ){ out.print("selected='selected'"); }%>  >Administrador</option>
                                     </select>
                             </div>
+                                    
                             <input type="submit" class="btn btn-success"  value="Registrar">
                             <a href="index.jsp"> Regresar</a>
                         </form>

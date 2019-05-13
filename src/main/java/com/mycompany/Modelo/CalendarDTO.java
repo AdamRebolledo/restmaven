@@ -16,13 +16,13 @@ public class CalendarDTO {
     String start;
     String end;
     String url;
-    String className;
+    int className;
     boolean editable;
 
     public CalendarDTO() {
     }
 
-    public CalendarDTO(int id, String title, String start, String end, String url, String className, boolean editable) {
+    public CalendarDTO(int id, String title, String start, String end, String url, int className, boolean editable) {
         this.id = id;
         this.title = title;
         this.start = start;
@@ -72,11 +72,11 @@ public class CalendarDTO {
         this.url = url;
     }
 
-    public String getClassName() {
+    public int getClassName() {
         return className;
     }
 
-    public void setClassName(String className) {
+    public void setClassName(int className) {
         this.className = className;
     }
 

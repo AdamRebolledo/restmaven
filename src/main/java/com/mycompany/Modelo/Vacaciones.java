@@ -20,12 +20,12 @@ public class Vacaciones {
     String vacaciones_fin;
     String vacaciones_url;
     int usuario_id;
-    String vacaciones_className;
+    int vacaciones_className;
     boolean vacaciones_editable;
     public Vacaciones() {
     }
 
-    public Vacaciones(int vacaciones_id, String vacaciones_titulo, String vacaciones_inicio, String vacaciones_fin, String vacaciones_url, int usuario_id, String vacaciones_className, boolean vacaciones_editable) {
+    public Vacaciones(int vacaciones_id, String vacaciones_titulo, String vacaciones_inicio, String vacaciones_fin, String vacaciones_url, int usuario_id, int vacaciones_className, boolean vacaciones_editable) {
         this.vacaciones_id = vacaciones_id;
         this.vacaciones_titulo = vacaciones_titulo;
         this.vacaciones_inicio = vacaciones_inicio;
@@ -84,11 +84,11 @@ public class Vacaciones {
         this.usuario_id = usuario_id;
     }
 
-    public String getVacaciones_className() {
+    public int getVacaciones_className() {
         return vacaciones_className;
     }
 
-    public void setVacaciones_className(String vacaciones_className) {
+    public void setVacaciones_className(int vacaciones_className) {
         this.vacaciones_className = vacaciones_className;
     }
 

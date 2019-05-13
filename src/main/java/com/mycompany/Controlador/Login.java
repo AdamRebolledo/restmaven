@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
     String visualizar = "visualizar.jsp";
     String perfil = "perfil.jsp";
     String add = "add.jsp";
-
+    String menuUser = "menuser.jsp";
     //modelaje
     PersonaDAO dao = new PersonaDAO();
     Persona p = new Persona();
@@ -140,7 +140,7 @@ public class Login extends HttpServlet {
 
         if (p.getUsuario_pass() != null) {
             System.out.println("autorizado");
-
+            session.setAttribute("userId", p.getUsuario_id());
             session.setAttribute("userDni", p.getUsuario_rut());
             session.setAttribute("userName", p.getUsuario_nombre());
             session.setAttribute("userLastname", p.getUsuario_apellido());
@@ -158,8 +158,9 @@ public class Login extends HttpServlet {
             } else if (p.getUsuario_rol() == 3) {
                 session.setAttribute("userTipoRol", "Administrador");
             }
-
-            response.sendRedirect(menuPrincipal);
+               
+           response.sendRedirect(menuPrincipal);
+ 
         } else {
             System.out.println("no autorizado");
             response.sendRedirect(usuarioinvalido);

@@ -26,11 +26,10 @@ public class vacacionesDAO implements VacacionesCRUD {
     PreparedStatement ps;
     ResultSet rs;
     Vacaciones p = new Vacaciones();
-    
-    
+
     public boolean add(Vacaciones vac) {
         String sql = "INSERT INTO vacaciones (vacaciones_titulo, vacaciones_inicio, vacaciones_fin, vacaciones_url,"
-                + "usuario_id, vacaciones_className, vacaciones_editable) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "usuario_id) VALUES (?, ?, ?, ?, ?)";
 
         System.out.println(sql);
 
@@ -43,10 +42,6 @@ public class vacacionesDAO implements VacacionesCRUD {
             ps.setString(3, vac.getVacaciones_fin());
             ps.setString(4, vac.getVacaciones_url());
             ps.setInt(5, vac.getUsuario_id());
-            ps.setString(6, vac.getVacaciones_className());
-            ps.setBoolean(7, vac.isVacaciones_editable());
-         
-
             System.out.println(ps);
 
             ps.executeUpdate();
@@ -56,13 +51,14 @@ public class vacacionesDAO implements VacacionesCRUD {
         return false;
 
     }
+
     public ArrayList<Vacaciones> listar(int id) {
 
         ArrayList<Vacaciones> list = new ArrayList<>();
         String sql = "SELECT * FROM vacaciones WHERE usuario_id =" + "'" + id + "'";
-        
-        System.out.println("modelo vacaciones  "+sql);
-        
+
+        System.out.println("modelo vacaciones  " + sql);
+
         try {
             con = cn.getConnection();
             ps = (PreparedStatement) con.prepareStatement(sql);
@@ -75,7 +71,7 @@ public class vacacionesDAO implements VacacionesCRUD {
                 vac.setVacaciones_fin(rs.getString("vacaciones_fin"));
                 vac.setVacaciones_url(rs.getString("vacaciones_url"));
                 vac.setUsuario_id(rs.getInt("usuario_id"));
-                vac.setVacaciones_className(rs.getString("vacaciones_className"));
+                vac.setVacaciones_className(rs.getInt("vacaciones_className"));
                 vac.setVacaciones_editable(rs.getBoolean("vacaciones_editable"));
 
                 list.add(vac);
@@ -83,89 +79,82 @@ public class vacacionesDAO implements VacacionesCRUD {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
-        System.out.println("lista del metodo"+list.size());
-        
+
+        System.out.println("lista del metodo" + list.size());
+
         return list;
 
     }
 
     public Vacaciones list(int id) {
-        String sql = "SELECT * FROM persona WHERE usuario_id=" + "'" + id + "'";
+        String sql = "SELECT * FROM vacaciones WHERE vacaciones_id=" + "'" + id + "'";
         System.out.println(sql);
-        /*  try {
-         con = cn.getConnection();
-         ps = (PreparedStatement) con.prepareStatement(sql);
-         rs = ps.executeQuery();
-         while (rs.next()) {
-         p.setUsuario_id(rs.getInt("usuario_id"));
-         p.setUsuario_rut(rs.getString("usuario_rut"));
-         p.setUsuario_nombre(rs.getString("usuario_nombre"));
-         p.setUsuario_apellido(rs.getString("usuario_apellido"));
-         p.setUsuario_telefono(rs.getString("usuario_telefono"));
-         p.setUsuario_correo(rs.getString("usuario_correo"));
-         p.setUsuario_pass(rs.getString("usuario_pass"));
-         p.setUsuario_fecha_nacimiento(rs.getDate("usuario_fecha_nacimiento"));
-         p.setUsuario_estatus(rs.getInt("usuario_estatus"));
-         p.setUsuario_rol(rs.getInt("usuario_rol"));
+        try {
+            con = cn.getConnection();
+            ps = (PreparedStatement) con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
 
-         }
-         } catch (Exception e) {
-         System.out.println(e);
-         }
-         */
+                p.setVacaciones_titulo(rs.getString("vacaciones_titulo"));
+                p.setVacaciones_inicio(rs.getString("vacaciones_inicio"));
+                p.setVacaciones_fin(rs.getString("vacaciones_fin"));
+                p.setVacaciones_url(rs.getString("vacaciones_url"));
+                p.setVacaciones_className(rs.getInt("vacaciones_className"));
+
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         return p;
     }
 
-
-
     public boolean edit(Vacaciones per) {
-        /*
-         String sql = "UPDATE persona SET usuario_rut=? , usuario_nombre= ?, usuario_apellido=?,"
-         + "usuario_telefono=?, usuario_correo=?, usuario_pass=?,"
-         + "usuario_fecha_nacimiento=?, usuario_estatus=?, usuario_rol=?"
-         + "  WHERE usuario_id=" + per.getUsuario_id();
-         System.out.println(sql);
-         try {
-         con = cn.getConnection();
-         ps = (PreparedStatement) con.prepareStatement(sql);
 
-         ps.setString(1, per.getUsuario_rut());
-         ps.setString(2, per.getUsuario_nombre());
-         ps.setString(3, per.getUsuario_apellido());
-         ps.setString(4, per.getUsuario_telefono());
-         ps.setString(5, per.getUsuario_correo());
-         ps.setString(6, per.getUsuario_pass());
-         ps.setDate(7, new java.sql.Date(per.getUsuario_fecha_nacimiento().getTime()));
-         ps.setInt(8, per.getUsuario_estatus());
-         ps.setInt(9, per.getUsuario_rol());
+        String sql = "UPDATE vacaciones SET vacaciones_titulo=? , vacaciones_inicio= ?, vacaciones_fin=?,"
+                + "vacaciones_url=?, usuario_id=?, vacaciones_className=? WHERE vacaciones_id=" + per.getVacaciones_id();
 
-         ps.executeUpdate();
+        System.out.println(sql);
+        try {
+            con = cn.getConnection();
+            ps = (PreparedStatement) con.prepareStatement(sql);
 
-         } catch (Exception e) {
-         }
-         System.out.println(ps);*/
+            ps.setString(1, per.getVacaciones_titulo());
+            ps.setString(2, per.getVacaciones_inicio());
+            ps.setString(3, per.getVacaciones_fin());
+            ps.setString(4, per.getVacaciones_url());
+            ps.setInt(5, per.getUsuario_id());
+            ps.setInt(6, per.getVacaciones_className());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+        }
+        System.out.println(ps);
         return false;
     }
+  public int cobrados(){
+    int cobrados = 1; 
+        
+        return cobrados;
+    }
+  
+    public boolean eliminar(int id, int idVac) {
+        String sql = "DELETE FROM vacaciones WHERE usuario_id=" + id + " AND vacaciones_id=" + idVac;
+        System.out.println(sql);
+        try {
+            con = cn.getConnection();
+            ps = (PreparedStatement) con.prepareStatement(sql);
+            ps.executeUpdate();
 
-    public boolean eliminar(int id) {/*
-         String sql = "DELETE FROM persona WHERE usuario_id=" + id;
-         try {
-         con = cn.getConnection();
-         ps = (PreparedStatement) con.prepareStatement(sql);
-         ps.executeUpdate();
-
-         } catch (Exception e) {
-         }
-         System.out.println(ps);
-         */
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(ps);
 
         return true;
     }
-
-    @Override
-    public List listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+  
 
 }

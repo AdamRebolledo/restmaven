@@ -73,6 +73,7 @@ public class PersonaDAO implements CRUD {
                 p.setUsuario_correo(rs.getString("usuario_correo"));
                 p.setUsuario_pass(rs.getString("usuario_pass"));
                 p.setUsuario_fecha_nacimiento(rs.getDate("usuario_fecha_nacimiento"));
+                 p.setUsuario_fecha_ingreso(rs.getDate("usuario_fecha_ingreso"));
                 p.setUsuario_estatus(rs.getInt("usuario_estatus"));
                 p.setUsuario_rol(rs.getInt("usuario_rol"));
 
@@ -86,8 +87,8 @@ public class PersonaDAO implements CRUD {
 
     public boolean add(Persona per) {
         String sql = "INSERT INTO persona (usuario_rut, usuario_nombre, usuario_apellido, usuario_telefono,"
-                + "usuario_correo, usuario_pass, usuario_fecha_nacimiento, usuario_estatus, usuario_rol"
-                + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "usuario_correo, usuario_pass, usuario_fecha_nacimiento, usuario_estatus"
+                + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         System.out.println(sql);
 
@@ -103,7 +104,8 @@ public class PersonaDAO implements CRUD {
             ps.setString(6, per.getUsuario_pass());
             ps.setDate(7, new java.sql.Date(per.getUsuario_fecha_nacimiento().getTime()));
             ps.setInt(8, per.getUsuario_estatus());
-            ps.setInt(9, per.getUsuario_rol());
+            
+            //ps.setInt(9, per.getUsuario_rol());
             
             System.out.println(ps);
           
@@ -119,7 +121,7 @@ public class PersonaDAO implements CRUD {
     public boolean edit(Persona per) {
         String sql = "UPDATE persona SET usuario_rut=? , usuario_nombre= ?, usuario_apellido=?,"
                 + "usuario_telefono=?, usuario_correo=?, usuario_pass=?,"
-                + "usuario_fecha_nacimiento=?, usuario_estatus=?, usuario_rol=?"
+                + "usuario_fecha_nacimiento=?, usuario_fecha_ingreso=? , usuario_estatus=?, usuario_rol=?"
                 + "  WHERE usuario_id=" + per.getUsuario_id();
         System.out.println(sql);
         try {
@@ -133,8 +135,9 @@ public class PersonaDAO implements CRUD {
             ps.setString(5, per.getUsuario_correo());
             ps.setString(6, per.getUsuario_pass());
             ps.setDate(7, new java.sql.Date(per.getUsuario_fecha_nacimiento().getTime()));
-            ps.setInt(8, per.getUsuario_estatus());
-            ps.setInt(9, per.getUsuario_rol());
+            ps.setDate(8, new java.sql.Date(per.getUsuario_fecha_ingreso().getTime()));
+            ps.setInt(9, per.getUsuario_estatus());
+            ps.setInt(10, per.getUsuario_rol());
 
             ps.executeUpdate();
 

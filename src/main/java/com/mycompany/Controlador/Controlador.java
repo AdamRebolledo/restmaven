@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.Controlador;
 
 import com.mycompany.Modelo.Persona;
@@ -39,23 +38,18 @@ public class Controlador extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    
-    
-    
-    String listar="View/Persona/listar.jsp";
-    String add="View/Persona/add.jsp";
-    String edit="View/Persona/edit.jsp";
-    String list= "View/Persona/listar.jsp";
+    String listar = "View/Persona/listar.jsp";
+    String add = "View/Persona/add.jsp";
+    String edit = "View/Persona/edit.jsp";
+    String list = "View/Persona/listar.jsp";
     String index = "index.jsp";
     String menuPrincipal = "menuprincipal.jsp";
-        String addEvent = "addEvents.jsp";
+    String addEvent = "addEvents.jsp";
     String viewEvents = "viewEvents.jsp";
-    
-    
-    Persona p= new Persona();
+
+    Persona p = new Persona();
     PersonaDAO dao = new PersonaDAO();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,7 +58,7 @@ public class Controlador extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Controlador</title>");            
+            out.println("<title>Servlet Controlador</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Controlador at " + request.getContextPath() + "</h1>");
@@ -85,33 +79,27 @@ public class Controlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String acceso ="";
+        String acceso = "";
         String action = request.getParameter("accion");
-        
-        if(action.equalsIgnoreCase("add")){
-        acceso=add;
-        }
-        else if(action.equalsIgnoreCase("listar")){
-        acceso= list;
-        }
-        else if(action.equalsIgnoreCase("editar")){
-           
-        acceso= edit;
-        }
-         else if(action.equalsIgnoreCase("eliminar")){
-             int usuarioId = Integer.parseInt(request.getParameter("usuario_id"));
-             dao.eliminar(usuarioId);
-        acceso= list;
-        }
-         else if (action.equalsIgnoreCase("addEvent")) {
+
+        if (action.equalsIgnoreCase("add")) {
+            acceso = add;
+        } else if (action.equalsIgnoreCase("listar")) {
+            acceso = list;
+        } else if (action.equalsIgnoreCase("editar")) {
+
+            acceso = edit;
+        } else if (action.equalsIgnoreCase("eliminar")) {
+            int usuarioId = Integer.parseInt(request.getParameter("usuario_id"));
+            dao.eliminar(usuarioId);
+            acceso = list;
+        } else if (action.equalsIgnoreCase("addEvent")) {
             acceso = addEvent;
-        }
-        else  if (action.equalsIgnoreCase("viewEvents")) {
-               
+        } else if (action.equalsIgnoreCase("viewEvents")) {
+
             acceso = viewEvents;
         }
 
-        
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
     }
@@ -127,35 +115,43 @@ public class Controlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
+
         System.out.println("controlador editar");
         int usuarioId = Integer.parseInt(request.getParameter("usuario_id"));
-        
-           System.out.println(usuarioId);
-           
+
+        System.out.println(usuarioId);
+
         String usuarioRut = request.getParameter("usuario_rut");
         String usuarioNombre = request.getParameter("usuario_nombre");
-        
-         System.out.println(usuarioNombre);
+
+        System.out.println(usuarioNombre);
         String usuarioApellido = request.getParameter("usuario_apellido");
         String usuarioTelefono = request.getParameter("usuario_telefono");
         String usuarioCorreo = request.getParameter("usuario_correo");
         String usuarioPass = request.getParameter("usuario_pass");
         String fechaNacimiento = request.getParameter("usuario_fecha_nacimiento");
+        String fechaIngreso = request.getParameter("usuario_fecha_ingreso");
         int usuarioEstatus = Integer.parseInt(request.getParameter("usuario_estatus"));
         int usuarioRol = Integer.parseInt(request.getParameter("usuario_rol"));
-        
-        
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-Date ts = null;
+        Date ts = null;
         try {
-          ts = df.parse(fechaNacimiento);
+            ts = df.parse(fechaNacimiento);
         } catch (ParseException ex) {
             Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        DateFormat dfI = new SimpleDateFormat("yyyy-MM-dd");
+        Date tsI = null;
+        try {
+            tsI = dfI.parse(fechaIngreso);
+        } catch (ParseException ex) {
+            Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         if (usuarioRut != null) {
-                    
+
             p.setUsuario_id(usuarioId);
             p.setUsuario_rut(usuarioRut);
             p.setUsuario_nombre(usuarioNombre);
@@ -164,17 +160,18 @@ Date ts = null;
             p.setUsuario_correo(usuarioCorreo);
             p.setUsuario_pass(usuarioPass);
             p.setUsuario_fecha_nacimiento(ts);
+            p.setUsuario_fecha_ingreso(tsI);
             p.setUsuario_estatus(usuarioEstatus);
             p.setUsuario_rol(usuarioRol);
-            
+
             dao.edit(p);
-            
+
             response.sendRedirect(menuPrincipal);
-         
+
         }
-        
+
         processRequest(request, response);
-       
+
     }
 
     /**

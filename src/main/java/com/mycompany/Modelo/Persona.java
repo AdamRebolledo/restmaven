@@ -25,13 +25,14 @@ public class Persona {
     Date usuario_fecha_nacimiento;
     int usuario_estatus;
     int usuario_rol;
+    Date usuario_fecha_ingreso;
 
     public Persona() {
     }
 
     public Persona(String usuario_rut, String usuario_nombre, String usuario_apellido, String usuario_telefono,
             String usuario_correo, String usuario_pass, Date usuario_fecha_nacimiento,
-            int usuario_estatus, int usuario_rol) {
+            int usuario_estatus, int usuario_rol,  Date usuario_fecha_ingreso) {
         this.usuario_rut = usuario_rut;
         this.usuario_nombre = usuario_nombre;
         this.usuario_apellido = usuario_apellido;
@@ -41,6 +42,7 @@ public class Persona {
         this.usuario_fecha_nacimiento = usuario_fecha_nacimiento;
         this.usuario_estatus = usuario_estatus;
         this.usuario_rol = usuario_rol;
+        this.usuario_fecha_ingreso=usuario_fecha_ingreso;
 
     }
 
@@ -124,4 +126,15 @@ public class Persona {
         this.usuario_rol = usuario_rol;
     }
 
+    public Date getUsuario_fecha_ingreso() {
+        return usuario_fecha_ingreso;
+    }
+
+    public void setUsuario_fecha_ingreso(Date usuario_fecha_ingreso) {
+        this.usuario_fecha_ingreso = usuario_fecha_ingreso;
+    }
+
+    
+    
+    
 }

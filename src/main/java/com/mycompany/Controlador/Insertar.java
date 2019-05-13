@@ -102,10 +102,10 @@ public class Insertar extends HttpServlet {
         String usuarioPass = request.getParameter("usuario_pass");
         String fechaNacimiento = request.getParameter("usuario_fecha_nacimiento");
         int usuarioEstatus = Integer.parseInt(request.getParameter("usuario_estatus"));
-        int usuarioRol = Integer.parseInt(request.getParameter("usuario_rol"));
+        //int usuarioRol = Integer.parseInt(request.getParameter("usuario_rol"));
         
         
-        System.out.println("controlador insertar para analizar rol = "+usuarioRol);
+       // System.out.println("controlador insertar para analizar rol = "+usuarioRol);
    
 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 Date ts = null;
@@ -125,7 +125,7 @@ Date ts = null;
             p.setUsuario_pass(usuarioPass);
             p.setUsuario_fecha_nacimiento(ts);
             p.setUsuario_estatus(usuarioEstatus);
-            p.setUsuario_rol(usuarioRol);
+          //  p.setUsuario_rol(usuarioRol);
 
             dao.add(p);
             

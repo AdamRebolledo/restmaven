@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface VacacionesCRUD {
     
-     public List listar();
+     public List listar(int id);
     public Vacaciones list(int id);
     public boolean add(Vacaciones per);
     public boolean edit(Vacaciones per);
-    public boolean eliminar(int id );
+    public boolean eliminar(int id, int idVac );
     
 }
