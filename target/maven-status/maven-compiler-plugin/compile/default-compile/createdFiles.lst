@@ -3,10 +3,14 @@ com\mycompany\Modelo\Persona.class
 com\mycompany\Controlador\add.class
 com\mycompany\config\Conexion.class
 com\mycompany\Controlador\Login.class
+com\mycompany\Modelo\Solicitud.class
+com\mycompany\Modelo\CalendarDTO.class
 com\mycompany\ModeloDAO\vacacionesDAO.class
+com\mycompany\Controlador\editEvento.class
 com\mycompany\Interfaces\CRUD.class
 com\mycompany\Interfaces\VacacionesCRUD.class
 com\mycompany\Controlador\Insertar.class
+com\mycompany\Interfaces\SolicitudCRUD.class
 com\mycompany\Controlador\Controlador.class
 com\mycompany\Modelo\Vacaciones.class
 com\mycompany\ModeloDAO\PersonaDAO.class

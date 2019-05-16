@@ -17,12 +17,19 @@ public class Solicitud {
     int solicitud_id;
     int usuario_id;
     Date solicitud_fecha;
-    int solicitud_dias_pendientes;
     int solicitud_dias_cobrados;
 
     public Solicitud() {
     }
 
+    public Solicitud(int solicitud_id, int usuario_id, Date solicitud_fecha
+        , int solicitud_dias_cobrados) {
+        this.solicitud_id = solicitud_id;
+        this.usuario_id = usuario_id;
+        this.solicitud_fecha = solicitud_fecha;
+        this.solicitud_dias_cobrados = solicitud_dias_cobrados;
+    }
+    
     public int getSolicitud_id() {
         return solicitud_id;
     }
@@ -45,14 +52,6 @@ public class Solicitud {
 
     public void setSolicitud_fecha(Date solicitud_fecha) {
         this.solicitud_fecha = solicitud_fecha;
-    }
-
-    public int getSolicitud_dias_pendientes() {
-        return solicitud_dias_pendientes;
-    }
-
-    public void setSolicitud_dias_pendientes(int solicitud_dias_pendientes) {
-        this.solicitud_dias_pendientes = solicitud_dias_pendientes;
     }
 
     public int getSolicitud_dias_cobrados() {

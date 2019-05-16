@@ -10,6 +10,7 @@ import com.mycompany.Modelo.CalendarDTO;
 
 import com.mycompany.Modelo.Vacaciones;
 
+
 import com.mycompany.ModeloDAO.vacacionesDAO;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class vacaciones extends HttpServlet {
     Vacaciones vac = new Vacaciones();
     
    
-  
+    
  
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -87,9 +88,15 @@ public class vacaciones extends HttpServlet {
         String action = request.getParameter("accion");
 
         if (action.equalsIgnoreCase("addEvents")) {
-            int hola = dao.cobrados();
-            request.setAttribute("cobrado", hola);
             
+            int usuario_id = Integer.parseInt(request.getParameter("id"));
+            ArrayList<Integer> listaCobrados = dao.cobrados(usuario_id);
+            int totalCobrados = 0;
+            for (int x = 0; x < listaCobrados.size(); x++) {
+                   totalCobrados +=  listaCobrados.get(x);
+                }
+       
+            request.setAttribute("cobrado", totalCobrados);
             acceso = addEvent;
 
         } else if (action.equalsIgnoreCase("eliminar")) {
@@ -97,7 +104,6 @@ public class vacaciones extends HttpServlet {
             int idVac = Integer.parseInt(request.getParameter("idVac"));
             dao.eliminar(usuarioId, idVac);
             acceso = editEvents;
-            
         } else if (action.equalsIgnoreCase("editEvents")) {
             acceso = editEvents;
         } else if (action.equalsIgnoreCase("changeEvents")) {
@@ -120,7 +126,12 @@ public class vacaciones extends HttpServlet {
                 oc.setStart(pc.getVacaciones_inicio());
                 oc.setEnd(pc.getVacaciones_fin());
                 oc.setUrl(pc.getVacaciones_url());
-                oc.setClassName(pc.getVacaciones_className());
+                if(pc.getVacaciones_className() == 1){
+                oc.setClassName("aprovado");
+                }else{
+                oc.setClassName("rechazado");
+                }
+                System.out.println(oc.getClassName());
                 oc.setEditable(pc.isVacaciones_editable());
 
                 listaCalendarioVista.add(oc);

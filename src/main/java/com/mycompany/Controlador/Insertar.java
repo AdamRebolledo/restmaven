@@ -7,6 +7,9 @@ package com.mycompany.Controlador;
 
 import com.mycompany.Modelo.Persona;
 import com.mycompany.ModeloDAO.PersonaDAO;
+import com.mycompany.config.Validate;
+
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
@@ -18,6 +21,7 @@ import static java.time.Clock.system;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,9 +50,10 @@ public class Insertar extends HttpServlet {
     String edit = "edit.jsp";
     String list = "listar.jsp";
     String index = "index.jsp";
-
+    String userRegister = "registrousuario.jsp";
     Persona p = new Persona();
     PersonaDAO dao = new PersonaDAO();
+    Validate validate = new Validate();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -94,6 +99,7 @@ public class Insertar extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        //capturar variables
         String usuarioRut = request.getParameter("usuario_rut");
         String usuarioNombre = request.getParameter("usuario_nombre");
         String usuarioApellido = request.getParameter("usuario_apellido");
@@ -101,21 +107,71 @@ public class Insertar extends HttpServlet {
         String usuarioCorreo = request.getParameter("usuario_correo");
         String usuarioPass = request.getParameter("usuario_pass");
         String fechaNacimiento = request.getParameter("usuario_fecha_nacimiento");
-        int usuarioEstatus = Integer.parseInt(request.getParameter("usuario_estatus"));
-        //int usuarioRol = Integer.parseInt(request.getParameter("usuario_rol"));
-        
-        
-       // System.out.println("controlador insertar para analizar rol = "+usuarioRol);
-   
-DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-Date ts = null;
+
+        //transformar fecha string to date
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date ts = null;
         try {
-          ts = df.parse(fechaNacimiento);
+            ts = df.parse(fechaNacimiento);
         } catch (ParseException ex) {
             Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (usuarioRut != null) {
+        //validate 
+        boolean rut = validate.validateRut(usuarioRut);
+        boolean name = validate.validateText(usuarioNombre);
+        boolean lastName = validate.validateText(usuarioApellido);
+        boolean phone = validate.validateNumPhone(usuarioTelefono);
+        boolean email = validate.validateEmail(usuarioCorreo);
+        boolean Birthdate = validate.validateBirthdate(fechaNacimiento);
+        //aviso de error
+        if (rut == false
+                || name == false
+                || lastName == false
+                || phone == false
+                || email == false
+                || Birthdate == false) {
+
+            StringBuilder errors = new StringBuilder();
+            if (rut == false) {
+                errors.append("Rut invalido\\n");
+            }
+            if (name == false) {
+                errors.append("Nombre invalido\\n");
+            }
+            if (lastName == false) {
+                errors.append("Apellido invalido\\n");
+            }
+            if (phone == false) {
+                errors.append("Telefono invalido\\n");
+            }
+            if (email == false) {
+                errors.append("Correo invalido\\n");
+            }
+             if (Birthdate == false) {
+                errors.append("Fecha invalida\\n");
+            }
+
+            if (errors.toString().isEmpty()) {
+
+            } else {
+
+                request.setAttribute("errors", errors);
+                RequestDispatcher rd = request.getRequestDispatcher(userRegister);
+                rd.forward(request, response);
+            }
+
+        }
+
+        if (       rut == true
+                && name == true
+                && lastName == true
+                && phone == true
+                && email == true
+                && Birthdate == true
+           ) {
+
+            System.out.println("datos exitentes ::::::::");
 
             p.setUsuario_rut(usuarioRut);
             p.setUsuario_nombre(usuarioNombre);
@@ -124,12 +180,10 @@ Date ts = null;
             p.setUsuario_correo(usuarioCorreo);
             p.setUsuario_pass(usuarioPass);
             p.setUsuario_fecha_nacimiento(ts);
-            p.setUsuario_estatus(usuarioEstatus);
-          //  p.setUsuario_rol(usuarioRol);
 
+            //  p.setUsuario_rol(usuarioRol);
             dao.add(p);
-            
-            
+
             response.sendRedirect(index);
 
         }

@@ -109,7 +109,7 @@ Date ts = null;
         } catch (ParseException ex) {
             Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+       
         if (usuarioRut != null) {
 
             p.setUsuario_rut(usuarioRut);
@@ -121,17 +121,10 @@ Date ts = null;
             p.setUsuario_fecha_nacimiento(ts);
             p.setUsuario_estatus(usuarioEstatus);
             p.setUsuario_rol(usuarioRol);
-
             dao.add(p);
-            
-            
-            response.sendRedirect(menuPrincipal);
 
+            response.sendRedirect(menuPrincipal);
         }
-        
-        
-        
-        
         processRequest(request, response);
     }
 

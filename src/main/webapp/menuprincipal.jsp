@@ -19,7 +19,7 @@
         <div class="col-md-3">
             <img src="asset/javaname.png">
             <br><h5>ROL: ${userTipoRol}</h5>
-            
+
         </div>
 
         <div class="col-md-8">
@@ -43,16 +43,15 @@
                             </thead>
 
                             <%
-    
-              if( session.getAttribute("userTipoRol") == "Administrador" || session.getAttribute("userTipoRol") == "Ejecutivo" ){
-                       
-                   PersonaDAO dao = new PersonaDAO();
-                                List<Persona> list = dao.listar();
-                                Iterator<Persona> iter = list.iterator();
-                                Persona per = null;
-                                while (iter.hasNext()) {
+                                if (session.getAttribute("userTipoRol") == "Administrador" 
+                                 || session.getAttribute("userTipoRol") == "Ejecutivo") {
+                                    
+                                    PersonaDAO dao = new PersonaDAO();
+                                    List<Persona> list = dao.listar();
+                                    Iterator<Persona> iter = list.iterator();
+                                    Persona per = null;
+                                    while (iter.hasNext()) {
                                     per = iter.next();
-           
                             %>
 
                             <tbody>
@@ -94,46 +93,46 @@
 
                         <a href="Login?accion=add" class="btn btn-info">Agregar Persona</a>
                         <% }%>
-                        <% }else{ %>
-                        
-                         <%
-                                PersonaDAO dao = new PersonaDAO();
-                                int userid = (Integer) session.getAttribute("userId");
-                                Persona per = dao.list(userid);
-                            %>
+                        <% } else { %>
 
-                            <tbody>
-                                <tr>
-                                    <td><%= per.getUsuario_id()%></td>
-                                    <td><%= per.getUsuario_rut()%></td>
-                                    <td><%= per.getUsuario_nombre()%> <%= per.getUsuario_apellido()%></td>
-                                    <td><%= per.getUsuario_correo()%></td>
-                                    <td >
+                        <%
+                            PersonaDAO dao = new PersonaDAO();
+                            int userid = (Integer) session.getAttribute("userId");
+                            Persona per = dao.list(userid);
+                        %>
 
-                                        <!-- div style="width: 220px" -->
-                                        <div>
-                                            <div class="inline">  <a  href="Login?accion=editar&id=<%= per.getUsuario_id()%>" class="btn btn-warning  m-1" ><i  class="fas fa-edit text-white"></i></a> </div>
+                        <tbody>
+                            <tr>
+                                <td><%= per.getUsuario_id()%></td>
+                                <td><%= per.getUsuario_rut()%></td>
+                                <td><%= per.getUsuario_nombre()%> <%= per.getUsuario_apellido()%></td>
+                                <td><%= per.getUsuario_correo()%></td>
+                                <td >
 
-                                            <%
-                                                if (session.getAttribute("userTipoRol") == "Administrador") {
-                                            %>
-                                            <div class="inline"> <a  href="Login?accion=eliminar&id=<%= per.getUsuario_id()%>" class="btn btn-danger m-1" ><i  class="fas fa-trash-alt text-white"></i></a> </div>
-                                                    <% }%>
+                                    <!-- div style="width: 220px" -->
+                                    <div>
+                                        <div class="inline">  <a  href="Login?accion=editar&id=<%= per.getUsuario_id()%>" class="btn btn-warning  m-1" ><i  class="fas fa-edit text-white"></i></a> </div>
 
-                                            <div class="inline"> <a  href="Login?accion=visualizar&id=<%= per.getUsuario_id()%>" class="btn btn-info m-1" ><i  class="fas fa-user text-white"></i></a>   </div>
-                                            <div class="inline"> <a  href="vacaciones?accion=viewEvents&id=<%= per.getUsuario_id()%>" class="btn btn-dark m-1" ><i  class<i class="fas fa-calendar-alt text-white"></i></a>   </div>
-                                            <div class="inline"> <a  href="vacaciones?accion=addEvents&id=<%= per.getUsuario_id()%>" class="btn btn-secondary  m-1" ><i  class<i class="far fa-paper-plane text-white"></i></a>   </div>
+                                        <%
+                                            if (session.getAttribute("userTipoRol") == "Administrador") {
+                                        %>
+                                        <div class="inline"> <a  href="Login?accion=eliminar&id=<%= per.getUsuario_id()%>" class="btn btn-danger m-1" ><i  class="fas fa-trash-alt text-white"></i></a> </div>
+                                                <% }%>
 
-                                            <%
-                                                if (session.getAttribute("userTipoRol") == "Administrador" || session.getAttribute("userTipoRol") == "Ejecutivo") {
-                                            %>
-                                            <div class="inline"> <a  href="vacaciones?accion=editEvents&id=<%= per.getUsuario_id()%>" class="btn btn-primary  m-1" ><i  class<i class="fas fa-edit text-white"></i></a>   </div>
-                                                    <% } %>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        <div class="inline"> <a  href="Login?accion=visualizar&id=<%= per.getUsuario_id()%>" class="btn btn-info m-1" ><i  class="fas fa-user text-white"></i></a>   </div>
+                                        <div class="inline"> <a  href="vacaciones?accion=viewEvents&id=<%= per.getUsuario_id()%>" class="btn btn-dark m-1" ><i  class<i class="fas fa-calendar-alt text-white"></i></a>   </div>
+                                        <div class="inline"> <a  href="vacaciones?accion=addEvents&id=<%= per.getUsuario_id()%>" class="btn btn-secondary  m-1" ><i  class<i class="far fa-paper-plane text-white"></i></a>   </div>
 
-                            </tbody>
+                                        <%
+                                            if (session.getAttribute("userTipoRol") == "Administrador" || session.getAttribute("userTipoRol") == "Ejecutivo") {
+                                        %>
+                                        <div class="inline"> <a  href="vacaciones?accion=editEvents&id=<%= per.getUsuario_id()%>" class="btn btn-primary  m-1" ><i  class<i class="fas fa-edit text-white"></i></a>   </div>
+                                                <% } %>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
                         </table>
                         <%
 
@@ -144,7 +143,7 @@
                         <a href="Login?accion=add" class="btn btn-info">Agregar Persona</a>
                         <% }%>
                         <% }%>
-  
+
                     </div>
 
                 </div>

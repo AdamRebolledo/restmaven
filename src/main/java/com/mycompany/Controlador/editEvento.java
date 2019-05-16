@@ -5,10 +5,18 @@
  */
 package com.mycompany.Controlador;
 
+import com.mycompany.Modelo.Solicitud;
 import com.mycompany.Modelo.Vacaciones;
+
 import com.mycompany.ModeloDAO.vacacionesDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +41,11 @@ public class editEvento extends HttpServlet {
      */
     Vacaciones p = new Vacaciones();
     vacacionesDAO dao = new vacacionesDAO();
+
+    Solicitud sol = new Solicitud();
+
     String menuPrincipal = "menuprincipal.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -63,6 +75,7 @@ public class editEvento extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
@@ -85,9 +98,6 @@ public class editEvento extends HttpServlet {
         String fin = request.getParameter("fin");
         String url = request.getParameter("url");
         int className = Integer.parseInt(request.getParameter("className"));
-        
-        System.out.println("holaaaa"+idVac);
-        System.out.println("chaoo"+id);
 
         if (titulo != null) {
             p.setVacaciones_id(idVac);
@@ -97,13 +107,59 @@ public class editEvento extends HttpServlet {
             p.setVacaciones_fin(fin);
             p.setVacaciones_url(url);
             p.setVacaciones_className(className);
-
+            
             dao.edit(p);
+            
+            if(className == 1){           
+//fecha en se aprueba la solicitud
+            Date fechaActual = new Date();
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            String date = simpleDateFormat.format(fechaActual);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaWindows = null;
+            try {
+                fechaWindows = df.parse(date);
+            } catch (ParseException ex) {
+                Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("::::::::::" + fechaWindows);
+            
+            
+//cantidad de dias cobrados esta dado por el delta de fecha final - fecha inicial en dias 
 
+            //cambiar el formato a la fecha inicial
+            Date fechaInicial = null;
+            try {
+                fechaInicial = df.parse(inicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("fecha inicial de cobrados: "+ fechaInicial);
+            
+            
+            //cambiar el formato a fecha final
+            Date fechaFinal = null;
+            try {
+                fechaFinal = df.parse(fin);
+            } catch (ParseException ex) {
+                Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("fecha final de cobrados: "+ fechaFinal);
+
+            
+            //generar el delta entre fechas para obtener los dias cobrados en esta aprovacion de solicitud
+            int diasCobrados = (int) ((fechaFinal.getTime() - fechaInicial.getTime()) / 86400000);
+            System.out.println("Dias cobrados: : : : : " + diasCobrados);
+            
+            sol.setUsuario_id(id);
+            sol.setSolicitud_fecha(fechaWindows); //fecha actual en que se realiza la aprovacion 
+            sol.setSolicitud_dias_cobrados(diasCobrados);
+            
+            dao.addSolicitud(sol);
+            }   
             response.sendRedirect(menuPrincipal);
-
         }
-
         processRequest(request, response);
     }
 

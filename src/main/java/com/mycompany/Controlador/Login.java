@@ -133,12 +133,14 @@ public class Login extends HttpServlet {
 
         String usuarioCorreo = request.getParameter("usuario_correo");
         String usuarioPass = request.getParameter("usuario_pass");
+        
+        
         HttpSession session = request.getSession(true);
         p = dao.autenticar(usuarioCorreo, usuarioPass);
 
         System.out.println(p.getUsuario_correo() + " base" + p.getUsuario_pass() + "rol= " + p.getUsuario_rol());
 
-        if (p.getUsuario_pass() != null) {
+        if (p.getUsuario_pass() != null && p.getUsuario_correo() != null ) {
             System.out.println("autorizado");
             session.setAttribute("userId", p.getUsuario_id());
             session.setAttribute("userDni", p.getUsuario_rut());
@@ -164,7 +166,6 @@ public class Login extends HttpServlet {
         } else {
             System.out.println("no autorizado");
             response.sendRedirect(usuarioinvalido);
-
         }
 
         processRequest(request, response);

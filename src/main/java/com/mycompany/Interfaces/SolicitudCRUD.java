@@ -20,4 +20,5 @@ public interface SolicitudCRUD {
     public boolean add(Solicitud sol);
     public boolean edit(Solicitud sol);
     public boolean eliminar(int id );
+    public int cobrados();
 }
