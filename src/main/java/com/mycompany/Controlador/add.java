@@ -118,7 +118,7 @@ public class add extends HttpServlet {
         boolean phone = validate.validateNumPhone(usuarioTelefono);
         boolean email = validate.validateEmail(usuarioCorreo);
         boolean Birthdate = validate.validateBirthdate(fechaNacimiento);
-        boolean emailUnique = false;
+        boolean emailUnique = true;
         try {
             emailUnique = dao.duplicateEmail(usuarioCorreo);
         } catch (SQLException ex) {

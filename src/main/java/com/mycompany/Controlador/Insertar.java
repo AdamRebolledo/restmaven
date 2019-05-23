@@ -133,7 +133,7 @@ public class Insertar extends HttpServlet {
         boolean phone = validate.validateNumPhone(usuarioTelefono);
         boolean email = validate.validateEmail(usuarioCorreo);
         boolean Birthdate = validate.validateBirthdate(fechaNacimiento);
-        boolean emailUnique = false;
+        boolean emailUnique = true;
         try {
             emailUnique = dao.duplicateEmail(usuarioCorreo);
         } catch (SQLException ex) {
@@ -164,7 +164,7 @@ public class Insertar extends HttpServlet {
                 || phone == false
                 || email == false
                 || Birthdate == false
-                || emailUnique == false) {
+                || emailUnique == true) {
 
             StringBuilder errors = new StringBuilder();
             if (rut == false) {
