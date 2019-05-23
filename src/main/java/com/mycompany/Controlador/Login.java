@@ -133,14 +133,13 @@ public class Login extends HttpServlet {
 
         String usuarioCorreo = request.getParameter("usuario_correo");
         String usuarioPass = request.getParameter("usuario_pass");
-        
-        
+
         HttpSession session = request.getSession(true);
         p = dao.autenticar(usuarioCorreo, usuarioPass);
 
         System.out.println(p.getUsuario_correo() + " base" + p.getUsuario_pass() + "rol= " + p.getUsuario_rol());
 
-        if (p.getUsuario_pass() != null && p.getUsuario_correo() != null ) {
+        if (p.getUsuario_pass() != null && p.getUsuario_correo() != null) {
             System.out.println("autorizado");
             session.setAttribute("userId", p.getUsuario_id());
             session.setAttribute("userDni", p.getUsuario_rut());
@@ -160,12 +159,15 @@ public class Login extends HttpServlet {
             } else if (p.getUsuario_rol() == 3) {
                 session.setAttribute("userTipoRol", "Administrador");
             }
-               
-           response.sendRedirect(menuPrincipal);
- 
+
+            response.sendRedirect(menuPrincipal);
+
         } else {
-            System.out.println("no autorizado");
-            response.sendRedirect(usuarioinvalido);
+            StringBuilder errors = new StringBuilder();
+            errors.append("Correo o Contraseña incorrectos, por favor vuelve a intentarlo \\n");
+            request.setAttribute("errors", errors);
+            RequestDispatcher rd = request.getRequestDispatcher(index);
+            rd.forward(request, response);
         }
 
         processRequest(request, response);

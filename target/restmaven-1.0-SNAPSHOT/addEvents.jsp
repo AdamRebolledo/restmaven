@@ -21,6 +21,7 @@
     <div class="row">
         <div class="col-md-7">
             <h3>Añadir solicitud de dias libres</h3>
+         
             <div class="card card-body bg-light ">
                 <form action="vacaciones" method="POST" >
 
@@ -30,20 +31,34 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="text" id="run" name="titulo" class="form-control" placeholder="Ingresa el titulo de la solicitud" autofocus >
+                        <input type="text" id="run"onblur="vacio(this);
+                                validateTextField(this);"  name="titulo" class="form-control" placeholder="Ingresa el titulo de la solicitud" autofocus >
+                        <div class="invalid-feedback">
+                            Formato del Titulo invalido o vacio(solo catacteres de texto).
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" name="inicio" class="form-control" autofocus >
+                        <input type="date" id="name" onblur=" vacio(this); validateDateCurrent(this)" name="inicio" class="form-control" autofocus >
+                        <div class="invalid-feedback">
+                            La fecha ingresada debe ser menor a la fecha actual.
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" name="fin" class="form-control" autofocus >
+                        <input type="date" id="name" onblur=" vacio(this); compareDates(this.form, this)" name="fin" class="form-control" autofocus >
+                        <div class="invalid-feedback">
+                           La fecha ingresada debe ser mayor a la fecha ingresada en el campo anterior.
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" id="cell" name="url" class="form-control" placeholder="Ingresa algun link de tu evento" autofocus >
+                        <input type="text" id="cell" name="url" onblur="vacio(this);
+                                validateTextField(this);"class="form-control" placeholder="Ingresa algun link de tu evento" autofocus >
+                        <div class="invalid-feedback">
+                            Formato del Correo invalido o vacio.
+                        </div>
                     </div>
 
-                    <input type="submit" class="btn btn-success btn-block"  value="Agregar Evento">
+                    <button type="button" onclick="subEvents(this.form )" class="btn btn-success btn-block" >Agregar Evento</button>
 
                 </form>
             </div>

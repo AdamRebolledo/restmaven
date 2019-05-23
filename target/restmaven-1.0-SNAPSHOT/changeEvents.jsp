@@ -10,14 +10,14 @@
 <%@include file="navbar.jsp" %>
 
 
-     <%
-    Vacaciones vac= new Vacaciones();
+<%
+    Vacaciones vac = new Vacaciones();
     vacacionesDAO dao = new vacacionesDAO();
     int idVac = Integer.parseInt(request.getParameter("idVac"));
-    
+
     vac = dao.list(idVac);
     out.print(vac.getVacaciones_className());
-        %>
+%>
 <div class="container p-5">
     <h1>Añadir solicitud de dias libres</h1>
     <div class="row">
@@ -34,27 +34,46 @@
                         <input type="hidden" id="run" name="idVac" class="form-control" value="<%= idVac%>" autofocus >
                     </div>
                     <div class="form-group">
-                        <input type="text" id="run" name="titulo" class="form-control" value="<%= vac.getVacaciones_titulo() %>" autofocus >
+                        <input type="text" id="run" name="titulo" onblur="vacio(this);
+                                validateTextField(this);" class="form-control" value="<%= vac.getVacaciones_titulo()%>" autofocus >
+                        <div class="invalid-feedback">
+                            Formato del Titulo invalido o vacio(solo catacteres de texto).
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" name="inicio" class="form-control" value="<%= vac.getVacaciones_inicio() %>" autofocus >
+                        <input type="date" id="name" name="inicio" onblur="vacio(this); validateDateCurrent(this);"  class="form-control" value="<%= vac.getVacaciones_inicio()%>" autofocus >
+                        <div class="invalid-feedback">
+                            La fecha ingresada debe ser menor a la fecha actual.
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" name="fin" class="form-control" value="<%= vac.getVacaciones_fin() %>" autofocus >
+                        <input type="date" id="name" name="fin" onblur="vacio(this);
+                                compareDates(this.form, this);" class="form-control" value="<%= vac.getVacaciones_fin()%>" autofocus >
+                        <div class="invalid-feedback">
+                            La fecha ingresada debe ser mayor a la fecha ingresada en el campo anterior.
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" id="cell" name="url" class="form-control" value="<%= vac.getVacaciones_url() %>" autofocus >
+                        <input type="text" id="cell" name="url" onblur="vacio(this);
+                                validateTextField(this);"  class="form-control" value="<%= vac.getVacaciones_url()%>" autofocus >
+                        <div class="invalid-feedback">
+                            Formato del Correo invalido o vacio.
+                        </div>
                     </div>
                     <div class="form-group">
                         <select class="form-control" name="className">
-                            <option value="1" <% if( vac.getVacaciones_className() == 1 ){ out.print("selected='selected'"); }%>  >Aprovado</option>
-                            <option value="2" <%  if( vac.getVacaciones_className() == 2 ){ out.print("selected='selected'"); } %> >Rechazado</option>
-                                      
+                            <option value="1" <% if (vac.getVacaciones_className() == 1) {
+                                    out.print("selected='selected'");
+                                }%>  >Aprovado</option>
+                            <option value="2" <%  if (vac.getVacaciones_className() == 2) {
+                                    out.print("selected='selected'");
+                                }%> >Rechazado</option>
+
                         </select>
                     </div>
 
-                    <input type="submit" class="btn btn-success btn-block"  value="Editar Evento">
+                    <button type="button" onclick="subEvents(this.form)" class="btn btn-success btn-block"  >Editar Evento</button>
 
                 </form>
             </div>

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.mycompany.Controlador;
 
 import com.mycompany.Modelo.Persona;
 import com.mycompany.ModeloDAO.PersonaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +21,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.mycompany.config.Validate;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -39,11 +41,13 @@ public class add extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     //link
-        String menuPrincipal = "menuprincipal.jsp";
-        //modelo
-     Persona p = new Persona();
+    String menuPrincipal = "menuprincipal.jsp";
+    String add = "add.jsp";
+    //modelo
+    Persona p = new Persona();
     PersonaDAO dao = new PersonaDAO();
-    
+    Validate validate = new Validate();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,7 +56,7 @@ public class add extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet add</title>");            
+            out.println("<title>Servlet add</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet add at " + request.getContextPath() + "</h1>");
@@ -87,8 +91,7 @@ public class add extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         String usuarioRut = request.getParameter("usuario_rut");
         String usuarioNombre = request.getParameter("usuario_nombre");
         String usuarioApellido = request.getParameter("usuario_apellido");
@@ -98,20 +101,82 @@ public class add extends HttpServlet {
         String fechaNacimiento = request.getParameter("usuario_fecha_nacimiento");
         int usuarioEstatus = Integer.parseInt(request.getParameter("usuario_estatus"));
         int usuarioRol = Integer.parseInt(request.getParameter("usuario_rol"));
-        
-        
-        System.out.println("controlador insertar para analizar rol = "+usuarioRol);
-   
-DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-Date ts = null;
+
+        System.out.println("controlador insertar para analizar rol = " + usuarioRol);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date ts = null;
         try {
-          ts = df.parse(fechaNacimiento);
+            ts = df.parse(fechaNacimiento);
         } catch (ParseException ex) {
             Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-        if (usuarioRut != null) {
 
+        boolean rut = validate.validateRut(usuarioRut);
+        boolean name = validate.validateText(usuarioNombre);
+        boolean lastName = validate.validateText(usuarioApellido);
+        boolean phone = validate.validateNumPhone(usuarioTelefono);
+        boolean email = validate.validateEmail(usuarioCorreo);
+        boolean Birthdate = validate.validateBirthdate(fechaNacimiento);
+        boolean emailUnique = false;
+        try {
+            emailUnique = dao.duplicateEmail(usuarioCorreo);
+        } catch (SQLException ex) {
+            Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(":::::::::::::::::::::::::::::::::::::" + emailUnique);
+        //aviso de error
+        if (rut == false
+                || name == false
+                || lastName == false
+                || phone == false
+                || email == false
+                || Birthdate == false
+                || emailUnique == false) {
+
+            StringBuilder errors = new StringBuilder();
+            if (rut == false) {
+                errors.append("Rut invalido\\n");
+            }
+            if (name == false) {
+                errors.append("Nombre invalido\\n");
+            }
+            if (lastName == false) {
+                errors.append("Apellido invalido\\n");
+            }
+            if (phone == false) {
+                errors.append("Telefono invalido\\n");
+            }
+            if (email == false) {
+                errors.append("Correo invalido\\n");
+            }
+            if (Birthdate == false) {
+                errors.append("Fecha invalida\\n");
+            }
+            if (emailUnique == false) {
+                errors.append("El email ingresado ya existe en nuestros registros\\n");
+            }
+
+            if (errors.toString().isEmpty()) {
+
+            } else {
+
+                request.setAttribute("errors", errors);
+                RequestDispatcher rd = request.getRequestDispatcher(add);
+                rd.forward(request, response);
+            }
+
+        }
+
+        if (rut == true
+                && name == true
+                && lastName == true
+                && phone == true
+                && email == true
+                && Birthdate == true
+                && emailUnique == true) {
+
+            System.out.println("datos exitentes ::::::::");
             p.setUsuario_rut(usuarioRut);
             p.setUsuario_nombre(usuarioNombre);
             p.setUsuario_apellido(usuarioApellido);
@@ -127,15 +192,10 @@ Date ts = null;
         }
         processRequest(request, response);
     }
-
+}
     /**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description
      */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-}
+    

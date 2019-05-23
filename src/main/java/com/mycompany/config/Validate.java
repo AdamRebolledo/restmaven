@@ -6,6 +6,7 @@
 package com.mycompany.config;
 
 import com.mycompany.Controlador.Insertar;
+import com.mycompany.Modelo.Persona;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,22 +96,82 @@ public class Validate {
             return false;
         }
     }
+    
+    
 
     public boolean validateBirthdate(String text) {
 //fecha recibica
+        System.out.println(":::::::::::::::::::::::::::"+text);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date ts = null;
         try {
+            
             ts = df.parse(text);
         } catch (ParseException ex) {
-            Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+           System.out.println("error en la validacion de campo num");
+           return false;
         }
+        
 //fecha actual
         Date fechaFinal = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         formateador.format(fechaFinal);
 //diferencia
         int dias = (int) ((fechaFinal.getTime() - ts.getTime()) / 86400000);
+        if (dias > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean validateCurrentDate(String text){
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date ts = null;
+        try {
+            
+            ts = df.parse(text);
+        } catch (ParseException ex) {
+           System.out.println("error en la validacion de campo num");
+           return false;
+        }
+        
+        //fecha actual
+        Date fechaFinal = new Date();
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+        formateador.format(fechaFinal);
+        
+        //diferencia
+        int dias = (int) ((fechaFinal.getTime() - ts.getTime()) / 86400000);
+        if (dias > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean compareDates(String start, String end){
+    //fecha inicial
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date tsStart = null;
+        try {
+            
+            tsStart = df.parse(start);
+        } catch (ParseException ex) {
+           System.out.println("error en la validacion de campo num");
+           return false;
+        }
+        
+        //fecha final
+        Date tsEnd = null;
+        try {
+            tsEnd = df.parse(end);
+        } catch (ParseException ex) {
+           System.out.println("error en la validacion de campo num");
+           return false;
+        }
+         //diferencia
+        int dias = (int) ((tsEnd.getTime() - tsStart.getTime()) / 86400000);
         if (dias > 0) {
             return true;
         } else {

@@ -73,7 +73,7 @@ public class PersonaDAO implements CRUD {
                 p.setUsuario_correo(rs.getString("usuario_correo"));
                 p.setUsuario_pass(rs.getString("usuario_pass"));
                 p.setUsuario_fecha_nacimiento(rs.getDate("usuario_fecha_nacimiento"));
-                 p.setUsuario_fecha_ingreso(rs.getDate("usuario_fecha_ingreso"));
+                p.setUsuario_fecha_ingreso(rs.getDate("usuario_fecha_ingreso"));
                 p.setUsuario_estatus(rs.getInt("usuario_estatus"));
                 p.setUsuario_rol(rs.getInt("usuario_rol"));
 
@@ -89,7 +89,7 @@ public class PersonaDAO implements CRUD {
         String sql = "INSERT INTO persona (usuario_rut, usuario_nombre, usuario_apellido, usuario_telefono,"
                 + "usuario_correo, usuario_pass, usuario_fecha_nacimiento"
                 + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
+
         System.out.println(sql);
 
         try {
@@ -103,13 +103,10 @@ public class PersonaDAO implements CRUD {
             ps.setString(5, per.getUsuario_correo());
             ps.setString(6, per.getUsuario_pass());
             ps.setDate(7, new java.sql.Date(per.getUsuario_fecha_nacimiento().getTime()));
-            
-            
+
             //ps.setInt(9, per.getUsuario_rol());
-            
             System.out.println(ps);
-          
-            
+
             ps.executeUpdate();
         } catch (Exception e) {
         }
@@ -163,11 +160,11 @@ public class PersonaDAO implements CRUD {
     private void exit() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-     public Persona autenticar(String correo, String pass) {
-         Persona p = new Persona();
-         
-        String sql = "SELECT * FROM persona WHERE usuario_correo = "+"'"+correo+"'"+" AND usuario_pass= "+"'"+pass+"'";
+
+    public Persona autenticar(String correo, String pass) {
+        Persona p = new Persona();
+
+        String sql = "SELECT * FROM persona WHERE usuario_correo = " + "'" + correo + "'" + " AND usuario_pass= " + "'" + pass + "'";
         System.out.println(sql);
         try {
             con = cn.getConnection();
@@ -189,11 +186,25 @@ public class PersonaDAO implements CRUD {
         } catch (Exception e) {
             System.out.println(e);
         }
-     
+
         return p;
     }
-    
-    
-    
+
+    public boolean duplicateEmail(String correo) throws SQLException {
+        Persona p = new Persona();
+
+        String sql = "SELECT usuario_correo FROM persona WHERE usuario_correo = " + "'" + correo + "'";
+        System.out.println(sql);
+
+        con = cn.getConnection();
+        ps = (PreparedStatement) con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        if (rs.getString("usuario_correo") == correo) {
+            System.out.println("usuario repertido ALERT");
+            return false;
+        } 
+            return true;
+        
+    }
 
 }

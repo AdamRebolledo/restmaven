@@ -12,6 +12,7 @@ import com.mycompany.Modelo.Vacaciones;
 
 
 import com.mycompany.ModeloDAO.vacacionesDAO;
+import com.mycompany.config.Validate;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,7 +52,7 @@ public class vacaciones extends HttpServlet {
     vacacionesDAO dao = new vacacionesDAO();
     Vacaciones vac = new Vacaciones();
     
-   
+    Validate validate = new Validate();
     
  
 
@@ -95,7 +96,7 @@ public class vacaciones extends HttpServlet {
             for (int x = 0; x < listaCobrados.size(); x++) {
                    totalCobrados +=  listaCobrados.get(x);
                 }
-       
+            System.out.println(":::::::::::::::::::::::::::::::::::::"+totalCobrados);
             request.setAttribute("cobrado", totalCobrados);
             acceso = addEvent;
 
@@ -128,9 +129,11 @@ public class vacaciones extends HttpServlet {
                 oc.setUrl(pc.getVacaciones_url());
                 if(pc.getVacaciones_className() == 1){
                 oc.setClassName("aprovado");
-                }else{
+                }else if(pc.getVacaciones_className() == 2){
                 oc.setClassName("rechazado");
-                }
+                }else{
+                  oc.setClassName("espera");
+                        }
                 System.out.println(oc.getClassName());
                 oc.setEditable(pc.isVacaciones_editable());
 
@@ -171,18 +174,14 @@ public class vacaciones extends HttpServlet {
             vacaciones_url = "#";
         }
         
-       
-
-        if (vacaciones_titulo != null) {
-
+      
+       if (  vacaciones_titulo != null) {
             vac.setUsuario_id(usuario_id);
             vac.setVacaciones_titulo(vacaciones_titulo);
             vac.setVacaciones_inicio(vacaciones_inicio);
             vac.setVacaciones_fin(vacaciones_fin);
             vac.setVacaciones_url(vacaciones_url);
-            
-            
-         
+           
             dao.add(vac);
             response.sendRedirect(menuPrincipal);
 

@@ -13,6 +13,7 @@ import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -98,7 +99,15 @@ public class Insertar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+ if (           request.getParameter("usuario_rut") == null
+                || request.getParameter("usuario_nombre") == null
+                || request.getParameter("usuario_apellido") == null
+                || request.getParameter("usuario_telefono") == null
+                || request.getParameter("usuario_correo") == null
+                || request.getParameter("usuario_pass") == null
+                || request.getParameter("usuario_fecha_nacimiento") == null) {
+            response.sendRedirect(userRegister);
+        }
         //capturar variables
         String usuarioRut = request.getParameter("usuario_rut");
         String usuarioNombre = request.getParameter("usuario_nombre");
@@ -124,13 +133,38 @@ public class Insertar extends HttpServlet {
         boolean phone = validate.validateNumPhone(usuarioTelefono);
         boolean email = validate.validateEmail(usuarioCorreo);
         boolean Birthdate = validate.validateBirthdate(fechaNacimiento);
+        boolean emailUnique = false;
+        try {
+            emailUnique = dao.duplicateEmail(usuarioCorreo);
+        } catch (SQLException ex) {
+            Logger.getLogger(Insertar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(":::::::::::::::::::::::::::::::::::::" + emailUnique);
+        
+         if (           request.getParameter("usuario_rut") == null
+                || request.getParameter("usuario_nombre") == null
+                || request.getParameter("usuario_apellido") == null
+                || request.getParameter("usuario_telefono") == null
+                || request.getParameter("usuario_correo") == null
+                || request.getParameter("usuario_pass") == null
+                || request.getParameter("usuario_fecha_nacimiento") == null) {
+          rut = false;
+          name= false;
+          lastName= false;
+          phone=false;
+          email=false;
+          Birthdate=false;
+          emailUnique=false;
+        }
+        
         //aviso de error
         if (rut == false
                 || name == false
                 || lastName == false
                 || phone == false
                 || email == false
-                || Birthdate == false) {
+                || Birthdate == false
+                || emailUnique == false) {
 
             StringBuilder errors = new StringBuilder();
             if (rut == false) {
@@ -151,11 +185,13 @@ public class Insertar extends HttpServlet {
              if (Birthdate == false) {
                 errors.append("Fecha invalida\\n");
             }
+             if (emailUnique == false) {
+                errors.append("El email ingresado ya existe en nuestros registros\\n");
+            }
 
             if (errors.toString().isEmpty()) {
 
             } else {
-
                 request.setAttribute("errors", errors);
                 RequestDispatcher rd = request.getRequestDispatcher(userRegister);
                 rd.forward(request, response);
@@ -169,6 +205,7 @@ public class Insertar extends HttpServlet {
                 && phone == true
                 && email == true
                 && Birthdate == true
+                && emailUnique == true
            ) {
 
             System.out.println("datos exitentes ::::::::");

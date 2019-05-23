@@ -28,8 +28,9 @@
         <script src='js/fullcalendar.min.js'></script>
         <script src="fullcalendar/locale/es.js"></script>
         <style>
-            .aprovado {background-color:green; color:#ffffff;}
-            .rechazado {background-color: red ; color:#ffffff;}
+            .aprovado {background-color:#218838; color:#ffffff;}
+            .rechazado {background-color: #c82333 ; color:#ffffff;}
+            .espera{background-color: #138496 ; color:#ffffff;}
         </style>
         <script>
 

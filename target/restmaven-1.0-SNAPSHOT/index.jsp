@@ -12,11 +12,17 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="View/Includes/header.jsp" %>
+        <%@include file="header.jsp" %>
         <div class="container p-5">
 
             <h1>Ingresar al listado de tareas</h1>
-
+            
+            <% if (request.getAttribute("errors") != null) {%>
+            <script>
+                swal("Lamentable!", "<%= request.getAttribute("errors")%>", "error");
+            </script>
+            <% }%>
+            
             <div class="row">
                 <div class="col-md-8">
 

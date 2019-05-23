@@ -10,10 +10,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"/>
-
+        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+        <script src="js/validate.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,8 +22,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
-
-
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Control de vacaciones</a>
                     </li>
@@ -38,56 +35,69 @@
                 </ul>
 
             </div>
-                    <div class="dropdown mx-auto" style="width: 200px;">
-  <button class="btn btn-secondary dropdown-toggle mr-5" type="button" data-toggle="dropdown"><i  class="fas fa-bars text-white"></i>
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu bg-dark mx-auto p-2 ">
-    
-    <li><a href="Login?accion=perfil" class="text-white text-decoration-none">VER PERFIL</a></li>
-    <li><a href="Login?accion=index" class="text-white text-decoration-none">CERRAR SESSION</a></li>
-  </ul>
-</div>
+            <div class="dropdown mx-auto" style="width: 200px;">
+                <button class="btn btn-secondary dropdown-toggle mr-5" type="button" data-toggle="dropdown"><i  class="fas fa-bars text-white"></i>
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu bg-dark mx-auto p-2 ">
+
+                    <li><a href="Login?accion=perfil" class="text-white text-decoration-none">VER PERFIL</a></li>
+                    <li><a href="Login?accion=index" class="text-white text-decoration-none">CERRAR SESSION</a></li>
+                </ul>
+            </div>
         </nav>
-        
-           <div class="container p-5">
+
+        <div class="container p-5">
             <h1>Registro de Usuario</h1>
+
+            <% if (request.getAttribute("errors") != null) {%>
+            <script>
+                swal("Lamentable!", "<%= request.getAttribute("errors")%>", "error");
+            </script>
+            <% }%>
+
             <div class="row">
                 <div class="col-md-8">
 
                     <div class="card card-body bg-light ">
                         <form action="add" method="POST" >
                             <div class="form-group">
-                                <input type="text" id="run" name="usuario_rut" class="form-control" placeholder="Ingresa tu Rut" autofocus >
+                                <input type="text" id="run" name="usuario_rut" onblur="vacio(this);
+                                        checkRut(this);" class="form-control" placeholder="Ingresa tu Rut" autofocus >
                             </div>
                             <div class="form-group">
-                                <input type="text" id="name" name="usuario_nombre" class="form-control" placeholder="Ingresa tu Nombre" autofocus >
+                                <input type="text" id="name" onblur="vacio(this);
+                                        validateTextField(this);" name="usuario_nombre" class="form-control" placeholder="Ingresa tu Nombre" autofocus >
                             </div>
                             <div class="form-group">
-                                <input type="text" id="name" name="usuario_apellido" class="form-control" placeholder="Ingresa tu Apellido" autofocus >
+                                <input type="text" id="name" onblur="vacio(this);
+                                        validateTextField(this);" name="usuario_apellido" class="form-control" placeholder="Ingresa tu Apellido" autofocus >
                             </div>
 
                             <div class="form-group">
-                                <input type="text" id="cell" name="usuario_telefono" class="form-control" placeholder="Ingresa tu numero telefonico" autofocus >
+                                <input type="text" id="cell" onblur=" vacio(this);
+                                        validateNumPhone(this);"  name="usuario_telefono" class="form-control" placeholder="Ingresa tu numero telefonico" autofocus >
                             </div>
 
                             <div class="form-group">
-                                <input type="text" id="email" name="usuario_correo" class="form-control" placeholder="Ingresa tu Correo Electronico" autofocus >
+                                <input type="text" id="email" onblur="vacio(this); validateEmail(this);"
+                                       name="usuario_correo" class="form-control" placeholder="Ingresa tu Correo Electronico" autofocus >
                             </div>
                             <div class="form-group">
-                                <input type="password" id="pass" name="usuario_pass" class="form-control" placeholder="Ingresa tu Contraseña" autofocus >
+                                <input type="password" id="pass" onblur="vacio(this);" name="usuario_pass" class="form-control" placeholder="Ingresa tu Contraseña" autofocus >
                             </div>
                             <div class="form-group">
-                                <input type="date" name="usuario_fecha_nacimiento" class="form-control"  >
+                                <input type="date" onblur="vacio(this); validateBirthdate(this);" 
+                                       name="usuario_fecha_nacimiento" class="form-control"  >
                             </div>
                             <div class="form-group">
-                            <input type="checkbox" id="" name="usuario_estatus" value="1"> Activo
+                                <input type="checkbox" id="" name="usuario_estatus" value="1"> Activo
                             </div>
                             <div class="form-group">
-                                    <select class="form-control" name="usuario_rol">
-                                         <option value="1" selected>Usuario</option>
-                                         <option value="2">Ejecutivo</option>
-                                         <option value="3">Administrador</option>
-                                    </select>
+                                <select class="form-control" name="usuario_rol">
+                                    <option value="1" selected>Usuario</option>
+                                    <option value="2">Ejecutivo</option>
+                                    <option value="3">Administrador</option>
+                                </select>
                             </div>
                             <input type="submit" class="btn btn-success"  value="Registrar">
                             <a href="index.jsp"> Regresar</a>
