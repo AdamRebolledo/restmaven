@@ -26,7 +26,8 @@
         <script src='js/moment.min.js'></script>
         <script src='js/jquery.min.js'></script>
         <script src='js/fullcalendar.min.js'></script>
-        <script src="fullcalendar/locale/es.js"></script>
+        <script src="js/idiomaCalendar.js"></script>
+        
         <style>
             .aprovado {background-color:#218838; color:#ffffff;}
             .rechazado {background-color: #c82333 ; color:#ffffff;}

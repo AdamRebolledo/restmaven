@@ -21,9 +21,15 @@
     <div class="row">
         <div class="col-md-7">
             <h3>Añadir solicitud de dias libres</h3>
-         
+
+            <% if (request.getAttribute("errors") != null) {%>
+            <script>
+                swal("Lamentable!", "<%= request.getAttribute("errors")%>", "error");
+            </script>
+            <% }%>
+
             <div class="card card-body bg-light ">
-                <form action="vacaciones" method="POST" >
+                <form action="vacaciones" method="POST" id="myForm">
 
                     <div class="form-group">
                         <% int id = Integer.parseInt(request.getParameter("id"));%>
@@ -38,15 +44,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" onblur=" vacio(this); validateDateCurrent(this)" name="inicio" class="form-control" autofocus >
+                        <input type="date" id="name" onblur=" vacio(this);
+                                validateDateCurrent(this)" name="inicio" class="form-control" autofocus >
                         <div class="invalid-feedback">
                             La fecha ingresada debe ser menor a la fecha actual.
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" onblur=" vacio(this); compareDates(this.form, this)" name="fin" class="form-control" autofocus >
+                        <input type="date" id="name" onblur=" vacio(this);
+                                compareDates(this.form, this)" name="fin" class="form-control" autofocus >
                         <div class="invalid-feedback">
-                           La fecha ingresada debe ser mayor a la fecha ingresada en el campo anterior.
+                            La fecha ingresada debe ser mayor a la fecha ingresada en el campo anterior.
                         </div>
                     </div>
 
@@ -58,7 +66,7 @@
                         </div>
                     </div>
 
-                    <button type="button" onclick="subEvents(this.form )" class="btn btn-success btn-block" >Agregar Evento</button>
+                    <input type="submit" onclick="subEvents(this.form)" class="btn btn-success btn-block" value="Agregar Evento" >
 
                 </form>
             </div>
@@ -95,13 +103,20 @@
 
 
                     %>
+
+                    <% if (diasDisponibles <= 0) { %>  
+                    <script>
+                        document.getElementById('myForm').style.display = 'none';
+                        alert("Usted no tiene dias disponibles para solicitar");
+                    </script>
+                    <% }%>  
+
                     <h6>FECHA DEL CONTRATO: <%= ingreso%></h6>
                     <h6>DIAS COBRADOS: <%= cobrados%></h6>
                     <h6>DIAS DISPONIBLES :<%= diasDisponibles%> </h6>
                     <% } else {%>
                     <h6>NO TIENES CONTRATO PARA SOLICITAR DIAS</h6>
                     <%  }%>
-
                 </div>
             </div>
         </div>

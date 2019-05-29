@@ -184,9 +184,8 @@ public class PersonaDAO implements CRUD {
 
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("este es un error de base de datos  "+e);
         }
-
         return p;
     }
 

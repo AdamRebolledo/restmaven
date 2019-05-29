@@ -209,7 +209,7 @@ function subEvents(elemento) {
           ) {
         alert('El envio del formulario no es posible por datos vacios');
     } else {
-        elemento.submit();
+       
     }
 }
 

@@ -14,9 +14,7 @@
     Vacaciones vac = new Vacaciones();
     vacacionesDAO dao = new vacacionesDAO();
     int idVac = Integer.parseInt(request.getParameter("idVac"));
-
     vac = dao.list(idVac);
-    out.print(vac.getVacaciones_className());
 %>
 <div class="container p-5">
     <h1>Añadir solicitud de dias libres</h1>
@@ -35,20 +33,20 @@
                     </div>
                     <div class="form-group">
                         <input type="text" id="run" name="titulo" onblur="vacio(this);
-                                validateTextField(this);" class="form-control" value="<%= vac.getVacaciones_titulo()%>" autofocus >
+                            validateTextField(this);" class="form-control" value="<%= vac.getVacaciones_titulo()%>" autofocus readonly >
                         <div class="invalid-feedback">
                             Formato del Titulo invalido o vacio(solo catacteres de texto).
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="date" id="name" name="inicio" onblur="vacio(this); validateDateCurrent(this);"  class="form-control" value="<%= vac.getVacaciones_inicio()%>" autofocus >
+                        <input type="date" id="name" name="inicio" onblur="vacio(this); validateDateCurrent(this);"  class="form-control" value="<%= vac.getVacaciones_inicio()%>" autofocus readonly >
                         <div class="invalid-feedback">
                             La fecha ingresada debe ser menor a la fecha actual.
                         </div>
                     </div>
                     <div class="form-group">
                         <input type="date" id="name" name="fin" onblur="vacio(this);
-                                compareDates(this.form, this);" class="form-control" value="<%= vac.getVacaciones_fin()%>" autofocus >
+                                compareDates(this.form, this);" class="form-control" value="<%= vac.getVacaciones_fin()%>" autofocus readonly>
                         <div class="invalid-feedback">
                             La fecha ingresada debe ser mayor a la fecha ingresada en el campo anterior.
                         </div>
@@ -56,7 +54,7 @@
 
                     <div class="form-group">
                         <input type="text" id="cell" name="url" onblur="vacio(this);
-                                validateTextField(this);"  class="form-control" value="<%= vac.getVacaciones_url()%>" autofocus >
+                                validateTextField(this);"  class="form-control" value="<%= vac.getVacaciones_url()%>" autofocus readonly>
                         <div class="invalid-feedback">
                             Formato del Correo invalido o vacio.
                         </div>
@@ -73,7 +71,7 @@
                         </select>
                     </div>
 
-                    <button type="button" onclick="subEvents(this.form)" class="btn btn-success btn-block"  >Editar Evento</button>
+                    <input type="submit" onclick="subEvents(this.form)" class="btn btn-success btn-block" value="Editar Evento"  >
 
                 </form>
             </div>

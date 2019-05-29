@@ -143,7 +143,7 @@ public class Validate {
         
         //diferencia
         int dias = (int) ((fechaFinal.getTime() - ts.getTime()) / 86400000);
-        if (dias > 0) {
+        if (dias < 0) {
             return true;
         } else {
             return false;

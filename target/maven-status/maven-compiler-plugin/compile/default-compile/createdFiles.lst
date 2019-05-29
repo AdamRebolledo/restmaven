@@ -5,7 +5,9 @@ com\mycompany\config\Conexion.class
 com\mycompany\Controlador\Login.class
 com\mycompany\Modelo\Solicitud.class
 com\mycompany\Modelo\CalendarDTO.class
+com\mycompany\config\Encript.class
 com\mycompany\ModeloDAO\vacacionesDAO.class
+com\mycompany\config\Validate.class
 com\mycompany\Controlador\editEvento.class
 com\mycompany\Interfaces\CRUD.class
 com\mycompany\Interfaces\VacacionesCRUD.class

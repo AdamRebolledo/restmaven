@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col-md-8">
 
-                                <h1 class="m-3 mb-5">ID: ${useId}</h1>
+                                <h1 class="m-3 mb-5">ID: ${userId}</h1>
                                  <h1 class="m-3 mb-5">RUT: ${userDni}</h1>
                                   <h1 class="m-3 mb-5">NOMBRE: ${userName}</h1>
                                    <h1 class="m-3 mb-5">APELLIDO: ${userLastname}</h1>

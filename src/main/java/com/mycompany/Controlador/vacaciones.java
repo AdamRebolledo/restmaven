@@ -10,7 +10,6 @@ import com.mycompany.Modelo.CalendarDTO;
 
 import com.mycompany.Modelo.Vacaciones;
 
-
 import com.mycompany.ModeloDAO.vacacionesDAO;
 import com.mycompany.config.Validate;
 
@@ -47,14 +46,12 @@ public class vacaciones extends HttpServlet {
     String listaJson = "listaJson";
     String editEvents = "editEvents.jsp";
     String menuPrincipal = "menuprincipal.jsp";
-    String changeEvents ="changeEvents.jsp";
+    String changeEvents = "changeEvents.jsp";
 
     vacacionesDAO dao = new vacacionesDAO();
     Vacaciones vac = new Vacaciones();
-    
+
     Validate validate = new Validate();
-    
- 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -89,14 +86,14 @@ public class vacaciones extends HttpServlet {
         String action = request.getParameter("accion");
 
         if (action.equalsIgnoreCase("addEvents")) {
-            
+
             int usuario_id = Integer.parseInt(request.getParameter("id"));
             ArrayList<Integer> listaCobrados = dao.cobrados(usuario_id);
             int totalCobrados = 0;
             for (int x = 0; x < listaCobrados.size(); x++) {
-                   totalCobrados +=  listaCobrados.get(x);
-                }
-            System.out.println(":::::::::::::::::::::::::::::::::::::"+totalCobrados);
+                totalCobrados += listaCobrados.get(x);
+            }
+            System.out.println(":::::::::::::::::::::::::::::::::::::" + totalCobrados);
             request.setAttribute("cobrado", totalCobrados);
             acceso = addEvent;
 
@@ -127,13 +124,13 @@ public class vacaciones extends HttpServlet {
                 oc.setStart(pc.getVacaciones_inicio());
                 oc.setEnd(pc.getVacaciones_fin());
                 oc.setUrl(pc.getVacaciones_url());
-                if(pc.getVacaciones_className() == 1){
-                oc.setClassName("aprovado");
-                }else if(pc.getVacaciones_className() == 2){
-                oc.setClassName("rechazado");
-                }else{
-                  oc.setClassName("espera");
-                        }
+                if (pc.getVacaciones_className() == 1) {
+                    oc.setClassName("aprovado");
+                } else if (pc.getVacaciones_className() == 2) {
+                    oc.setClassName("rechazado");
+                } else {
+                    oc.setClassName("espera");
+                }
                 System.out.println(oc.getClassName());
                 oc.setEditable(pc.isVacaciones_editable());
 
@@ -165,6 +162,14 @@ public class vacaciones extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        if (request.getParameter("id") == null
+                || request.getParameter("titulo") == null
+                || request.getParameter("inicio") == null
+                || request.getParameter("fin") == null
+                || request.getParameter("url") == null) {
+            response.sendRedirect(addEvent);
+        }
+        //guardar recepcion
         int usuario_id = Integer.parseInt(request.getParameter("id"));
         String vacaciones_titulo = request.getParameter("titulo");
         String vacaciones_inicio = request.getParameter("inicio");
@@ -173,18 +178,70 @@ public class vacaciones extends HttpServlet {
         if (request.getParameter("url") == null) {
             vacaciones_url = "#";
         }
-        
-      
-       if (  vacaciones_titulo != null) {
+
+        System.out.println(":::::::::" + usuario_id + vacaciones_titulo + vacaciones_inicio + vacaciones_fin + vacaciones_url);
+
+        //validate 
+        boolean title = validate.validateText(vacaciones_titulo);
+        boolean start = validate.validateCurrentDate(vacaciones_inicio);
+        boolean end = validate.compareDates(vacaciones_inicio, vacaciones_fin);
+        boolean url = validate.validateText(addEvent);
+        // boolean uniqueVacation = dao.uniqueVacation(int usuario_id);
+        System.out.println("::::::::::validacion post" + title + start + end + url);
+        //aviso de error
+        if (title == false
+                || start == false
+                || end == false
+                || url == false) {
+
+            StringBuilder errors = new StringBuilder();
+            if (title == false) {
+                errors.append("Titulo invalido\\n");
+            }
+            if (start == false) {
+                errors.append("Fecha de inicio invalida\\n");
+            }
+            if (end == false) {
+                errors.append("Fecha de finalizacion invalida\\n");
+            }
+            if (url == false) {
+                errors.append("Url invalida\\n");
+            }
+
+            if (errors.toString().isEmpty()) {
+
+            } else {
+
+                ArrayList<Integer> listaCobrados = dao.cobrados(usuario_id);
+                int totalCobrados = 0;
+                for (int x = 0; x < listaCobrados.size(); x++) {
+                    totalCobrados += listaCobrados.get(x);
+                }
+                System.out.println(":::::::::::::::::::::::::::::::::::::" + totalCobrados);
+
+                request.setAttribute("cobrado", totalCobrados);
+                request.setAttribute("errors", errors);
+
+                RequestDispatcher rd = request.getRequestDispatcher(addEvent);
+                rd.forward(request, response);
+            }
+
+        }
+
+        if (title == true
+                && start == true
+                && end == true
+                && url == true) {
+            System.out.println("datos exitentes ::::::::");
+
             vac.setUsuario_id(usuario_id);
             vac.setVacaciones_titulo(vacaciones_titulo);
             vac.setVacaciones_inicio(vacaciones_inicio);
             vac.setVacaciones_fin(vacaciones_fin);
             vac.setVacaciones_url(vacaciones_url);
-           
+
             dao.add(vac);
             response.sendRedirect(menuPrincipal);
-
         }
 
         processRequest(request, response);

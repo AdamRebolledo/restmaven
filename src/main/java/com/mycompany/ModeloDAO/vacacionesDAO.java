@@ -194,4 +194,9 @@ public class vacacionesDAO implements VacacionesCRUD {
         System.out.println("lista del metodo" + cobrad.size()); 
         return cobrad;
     }
+
+   /* public boolean uniqueVacation(int id) {
+        String sql = "SELECT vacaciones_inicio, vacaciones_fin FROM vacaciones WHERE usuario_id ="+id;
+        
+    }*/
 }
